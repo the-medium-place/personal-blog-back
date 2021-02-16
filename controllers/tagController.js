@@ -37,14 +37,40 @@ router.get("/", (req, res) => {
     })
 })
 
+// get tag by id
+router.get('/:id',(req,res)=> {
+    db.Tag.findOne({where:{id:req.params.id}})
+    .then(dbTag => {
+        res.json(dbTag)
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).end(); 
+    })
+})
 
 
-// save new post
+// save new tag
 router.post('/', ({ body },res) => {
     console.log(body);
     db.Tag.create(body)
     .then(dbNewTag => {
         res.status(200).send(dbNewTag)
+    })
+    .catch(err => {
+        console.log(err)
+        res.status(500).send(err)
+    })
+})
+
+// update tag
+router.put('/:id', (req,res) => {
+    const { body, params } = req;
+    console.log(body,params)
+
+    db.Tag.update({text: body.text},{where:{id:params.id}})
+    .then(dbUpdatedTag => {
+        res.status(200).send(dbUpdatedTag)
     })
     .catch(err => {
         console.log(err)

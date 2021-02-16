@@ -30,7 +30,8 @@ const checkAuthStatus = request => {
 // get all posts
 router.get("/", (req, res) => {
     db.Post.findAll({
-        include:[db.Comment, db.Tag]
+        include:[db.Comment, db.Tag],
+        order: [["createdAt", "DESC"]]
     }).then(dbPosts => {
         res.json(dbPosts);
     }).catch(err => {
@@ -77,12 +78,9 @@ router.get('/tag/:id', (req,res)=>{
 
 // save new post
 router.post('/', ({ body },res) => {
-    // TODO: After front end is done, make sure 'tags' is coming through as an Array!!!!!
-    // =========================================!!!!!!!!=================================
-    // expected body shape: {title, text, image1url, image2url, image3url, tags(Array)}
     console.log(body);
-    const tags = body.tags.split(',')
-    console.log('HERES THE TAGS: ', '\n====================\n', tags)
+    const tags = body.tags
+    // console.log('HERES THE TAGS: ', '\n====================\n', tags)
     body.UserId = 1; // should always be UserId for me - the only user!
     db.Post.create(body)
     .then(dbNewPost => {
