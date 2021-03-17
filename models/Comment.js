@@ -4,7 +4,10 @@ module.exports = function (sequelize, DataTypes) {
 
         text: DataTypes.TEXT,
 
-        approved: DataTypes.BOOLEAN,
+        approved: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false
+        },
 
         name: DataTypes.STRING,
 

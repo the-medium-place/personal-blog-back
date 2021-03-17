@@ -34,9 +34,6 @@ router.get("/", (req, res) => {
         include: {
             model: db.Post,
             include: [db.Comment,db.Tag],
-            // include: {
-            //     model: db.Tag
-            // }
         }
     }).then(dbUsers => {
         res.json(dbUsers);
@@ -78,7 +75,6 @@ router.post("/login", (req, res) => {
                     email: dbUser.email,
                     image: dbUser.image,
                     admin: dbUser.admin
-
                 }
                 const token = jwt.sign(userTokenInfo, process.env.JWT_SECRET, { expiresIn: "2h" });
                 return res.status(200).json({ token: token })
@@ -91,7 +87,7 @@ router.post("/login", (req, res) => {
 })
 
 // secret route to retrieve single user info
-router.get('/secretProfile', (req,res) => {
+router.get('/getloggedinuser', (req,res) => {
     const loggedInUser = checkAuthStatus(req)
     if (!loggedInUser) {
         return res.status(401).send("Your token has expired - please log in again")
